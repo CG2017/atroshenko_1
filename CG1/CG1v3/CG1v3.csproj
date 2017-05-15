@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ColorMine">
+      <HintPath>..\packages\ColorMine.1.1.3.0\lib\ColorMine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -53,11 +56,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HsvColorSliders.xaml.cs">
+      <DependentUpon>HsvColorSliders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RgbColorSliders.xaml.cs">
+      <DependentUpon>RgbColorSliders.xaml</DependentUpon>
+    </Compile>
     <Page Include="ColorSliders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CoolSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HsvColorSliders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LuvColorSliders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -79,13 +96,21 @@
     <Compile Include="Color\HsvColorModel.cs" />
     <Compile Include="Color\LuvColorModel.cs" />
     <Compile Include="Color\RgbColorModel.cs" />
+    <Compile Include="Converters\RgbValueConverter.cs" />
     <Compile Include="CoolSlider.xaml.cs">
       <DependentUpon>CoolSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LuvColorSliders.xaml.cs">
+      <DependentUpon>LuvColorSliders.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RgbColorSliders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -105,6 +130,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

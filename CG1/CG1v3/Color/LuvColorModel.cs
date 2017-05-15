@@ -23,23 +23,9 @@ namespace CG1v3.Color
         private double _y;
         private double _z;
 
-        private double _r;
-        private double _g;
-        private double _b;
-
-        private static readonly double[,] RgbToXyz =
-        {
-            {0.5767309, 0.1855540, 0.1881852},
-            {0.2973769, 0.6273491, 0.0752741},
-            {0.0270343, 0.0706872, 0.9911085}
-        };
-
-        private static readonly double[,] XyzToRgb =
-        {
-            {2.0413690, -0.5649464, -0.3446944},
-            {-0.9692660, 1.8760108, 0.0415560},
-            {0.0134474, -0.1183897, 1.0154096}
-        };
+        private int _r;
+        private int _g;
+        private int _b;
 
         private const double Xr = 95.047;
         private const double Yr = 100;
@@ -53,6 +39,7 @@ namespace CG1v3.Color
 
             RecalculateRgbToXyz();
             RecalculateXyzToLuv();
+            CheckAndFixOverflow();
 
             base.OnColorPropertyChanged(e);
         }
@@ -96,9 +83,9 @@ namespace CG1v3.Color
             if (varB > 0.0031308) varB = 1.055 * (Math.Pow(varB, (1 / 2.4))) - 0.055;
             else varB = 12.92 * varB;
 
-            _r = (varR * 255);
-            _g = (varG * 255);
-            _b = (varB * 255);
+            _r = (int) (varR * 255);
+            _g = (int) (varG * 255);
+            _b = (int) (varB * 255);
         }
 
         private void RecalculateXyzToLuv()
@@ -120,13 +107,15 @@ namespace CG1v3.Color
             const double vr = (9 * Yr) / (Xr + (15 * Yr) + (3 * Zr));
 
             _l = (116 * varY) - 16;
+            if (_l < Tolerance)
+                _l = 0;
             _u = 13 * _l * (varU - ur);
             _v = 13 * _l * (varV - vr);
         }
 
         private void RecalculateLuvToXyz()
         {
-            if (Math.Abs(_l) < Tolerance)
+            if (_l == 0)
             {
                 _l = _x = _y = _z = 0;
                 return;
@@ -155,32 +144,32 @@ namespace CG1v3.Color
 
             if (_r > 255)
             {
-                errorMessage = "R is more than 255";
+                errorMessage = String.Format("R is {0} more than 255", _r);
                 _r = 255;
             }
             if (_g > 255)
             {
-                errorMessage = "G is more than 255";
+                errorMessage = String.Format("G is {0} more than 255", _g);
                 _g = 255;
             }
             if (_b > 255)
             {
-                errorMessage = "B is more than 255";
+                errorMessage = String.Format("B is {0} more than 255", _b);
                 _b = 255;
             }
             if (_r < 0)
             {
-                errorMessage = "R is less than 0";
+                errorMessage = String.Format("R is {0} less than 0", _r);
                 _r = 0;
             }
             if (_g < 0)
             {
-                errorMessage = "G is less than 0";
+                errorMessage = String.Format("G is {0} less than 0", _g);
                 _g = 0;
             }
             if (_b < 0)
             {
-                errorMessage = "B is less than 0";
+                errorMessage = String.Format("B is {0} less than 0", _b);
                 _b = 0;
             }
 
@@ -198,21 +187,30 @@ namespace CG1v3.Color
 
         public override double GetComponent(int i)
         {
-            if (i == 0) return _l / 100;
-            if (i == 1) return (_u + 100) / 200;
-            if (i == 2) return (_v + 100) / 200;
+            if (i == 0) return _l;
+            if (i == 1) return _u;
+            if (i == 2) return _v;
 
             throw new IndexOutOfRangeException();
         }
 
+        private bool IsValidComponent(int i, double v)
+        {
+            if (i == 0)
+                return v >= 0 && v <= 100;
+            if (i == 1 || i == 2)
+                return v >= -200 && v <= 200;
+            throw new IndexOutOfRangeException("i");
+        }
+
         public override void SetComponent(int i, double v)
         {
-            if (v < 0 || v > 1)
+            if (!IsValidComponent(i, v))
                 throw new ArgumentOutOfRangeException();
 
-            if (i == 0) _l = v * 100;
-            else if (i == 1) _u = v * 200 - 100;
-            else if (i == 2) _v = v * 200 - 100;
+            if (i == 0) _l = v;
+            else if (i == 1) _u = v;
+            else if (i == 2) _v = v;
             else 
                 throw new IndexOutOfRangeException();
 

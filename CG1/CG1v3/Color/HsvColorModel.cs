@@ -50,6 +50,7 @@ namespace CG1v3.Color
             }
             else
             {
+                _h = 0;
                 _hUndefined = true;
             }
 
@@ -61,24 +62,33 @@ namespace CG1v3.Color
 
         public override double GetComponent(int i)
         {
-            if (i == 0) return _h;
-            if (i == 1) return _s;
-            if (i == 2) return _v;
+            if (i == 0) return _h * 360;
+            if (i == 1) return _s * 100;
+            if (i == 2) return _v * 100;
 
             throw new IndexOutOfRangeException();
         }
 
         public override void SetComponent(int i, double v)
         {
-            if (v < 0 || v > 1)
+            if (!IsValidValue(v, i))
                 throw new ArgumentOutOfRangeException();
 
-            if (i == 0) _h = v;
-            else if (i == 1) _s = v;
-            else if (i == 2) _v = v;
+            if (i == 0) _h = v / 360;
+            else if (i == 1) _s = v / 100;
+            else if (i == 2) _v = v / 100;
             else throw new IndexOutOfRangeException();
 
             RecalculateRgbComponents();
+        }
+
+        private static bool IsValidValue(double v, int i)
+        {
+            if (i == 0)
+                return v >= 0 && v <= 360;
+            if (i == 1 || i == 2)
+                return v >= 0 && v <= 100;
+            throw new IndexOutOfRangeException();
         }
 
         private void RecalculateRgbComponents()
@@ -90,7 +100,7 @@ namespace CG1v3.Color
 
             double r, g, b;
             
-            if (_hUndefined)
+            if (_h == 0)
             {
                 r = 0;
                 g = 0;

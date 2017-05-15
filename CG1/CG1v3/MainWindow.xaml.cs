@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows.Data;
 using System.Windows.Media;
 using CG1v3.Color;
+using CG1v3.Converters;
 
 namespace CG1v3
 {
@@ -52,6 +54,7 @@ namespace CG1v3
 
         private void ColorOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
+//            ErrorView.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));           
             ColorPreview.Fill = new SolidColorBrush(Color.WinColor);
         }
     }

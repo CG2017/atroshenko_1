@@ -21,7 +21,7 @@
             Name="Slider"
             Grid.Column="1"
             VerticalAlignment="Center"
-            Value="{Binding Path=Value}"
+            Value="{Binding Path=Value, Mode=TwoWay}"
             Minimum="0"
             Maximum="1"
             SmallChange="0.01"/>
@@ -30,7 +30,7 @@
             Grid.Column="2"
             VerticalAlignment="Center"
             Width="40"
-            Text="{Binding Path=Value, StringFormat=G9}"/>
+            Text="{Binding Path=Value, StringFormat=F3, Mode=TwoWay}"/>
     </Grid>
 </UserControl>
 

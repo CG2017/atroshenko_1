@@ -14,7 +14,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <cg:ColorSliders
+        <cg:RgbColorSliders
             x:Name="RgbSliders"
             Grid.Row="0" 
             Grid.Column="0" 
@@ -24,12 +24,12 @@
             Grid.Row="0" 
             Grid.Column="1" 
             LabelsText="C,M,Y"/>
-        <cg:ColorSliders 
+        <cg:HsvColorSliders 
             x:Name="HsvSliders"
             Grid.Row="1" 
             Grid.Column="0"
             LabelsText="H,S,V"/>
-        <cg:ColorSliders
+        <cg:LuvColorSliders
             x:Name="LuvSliders"
             Grid.Row="1"
             Grid.Column="1"
