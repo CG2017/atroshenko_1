@@ -9,7 +9,7 @@ namespace CG1v3.Color
 {
     class HsvColorModel : ColorModel
     {
-        private bool _hUndefined = true;
+//        private bool _hUndefined = true;
         private double _h;
         private double _s;
         private double _v;
@@ -32,26 +32,39 @@ namespace CG1v3.Color
 
             if (delta >= Eps)
             {
-                _hUndefined = false;
+//                _hUndefined = false;
                 // Here we just check whether particular component was assigned to cmax.
                 // No floating point errors can occur here
 
                 // ReSharper disable CompareOfFloatsByEqualityOperator
 
                 if (cmax == r)
+                {
                     if (b < g) _h = (g - b) / delta;
-                    else _h = (b - g) / delta;
-                else if (cmax == g)
+                    else _h = (g - b) / delta + 6;  //else _h = (b - g) / delta;
+                }
+                if (cmax == g)
                     _h = (b - r) / delta + 2;
-                else
+                if (cmax == b)
                     _h = (r - g) / delta + 4;
+
+//                var delR = (((cmax - r) / 6) + (delta / 2)) / delta;
+//                var delG = ( ( ( cmax - g ) / 6 ) + ( delta / 2 ) ) / delta;
+//                var delB = ( ( ( cmax - b ) / 6 ) + ( delta / 2 ) ) / delta;
+//
+//                if (r == cmax) _h = delB - delG;
+//                else if (g == cmax) _h = (1 / 3.0) + delR - delB;
+//                else if (b == cmax) _h = (2 / 3.0) + delG - delR;
+//
+//                if (_h < 0) _h += 1;
+//                if ( _h > 1 ) _h -= 1;
 
                 // ReSharper restore CompareOfFloatsByEqualityOperator
             }
             else
             {
                 _h = 0;
-                _hUndefined = true;
+//                _hUndefined = true;
             }
 
             _h /= 6;
@@ -100,13 +113,13 @@ namespace CG1v3.Color
 
             double r, g, b;
             
-            if (_h == 0)
-            {
-                r = 0;
-                g = 0;
-                b = 0;
-            }
-            else if (h < 1)
+//            if (_h == 0)
+//            {
+//                r = 0;
+//                g = 0;
+//                b = 0;
+//            }
+            if (h < 1)
             {
                 r = c;
                 g = x;
@@ -136,11 +149,15 @@ namespace CG1v3.Color
                 g = 0;
                 b = c;
             }
-            else
+            else if (h <= 6)
             {
                 r = c;
                 g = 0;
                 b = x;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException();
             }
 
             Color col = new Color

@@ -9,7 +9,6 @@ namespace CG1v3.Color
 {
     class LuvColorModel : ColorModel
     {
-        // todo send to Dan, he knows better whether it works :-P
 
         private const double Tolerance = 1e-6;
         private const double Epsilon = .008856;
@@ -59,7 +58,7 @@ namespace CG1v3.Color
 
             varR = varR * 100;
             varG = varG * 100;
-            varB = varB * 100;//Observer. = 2°, Illuminant = D65
+            varB = varB * 100;
 
             _x = varR * 0.4124 + varG * 0.3576 + varB * 0.1805;
             _y = varR * 0.2126 + varG * 0.7152 + varB * 0.0722;
