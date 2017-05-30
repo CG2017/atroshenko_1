@@ -1,0 +1,34 @@
+﻿<Window x:Class="LineDrawer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:LineDrawer.Controls"
+        Title="MainWindow" Height="395" Width="640">
+    <Grid Name="Grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="PixelDrawerPlaceholder" Width="360" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <controls:PixelDrawer
+            Grid.Column="0"
+            x:Name="PixelDrawer"
+            Width="360"
+            Height="360"
+            PixelSize="10"/>
+        <ComboBox 
+            Name="AlgoSelect"
+            Grid.Column="1" 
+            HorizontalAlignment="Left" 
+            Margin="12,4,0,0" 
+            VerticalAlignment="Top" 
+            Width="252"
+            SelectionChanged="Selector_OnSelectionChanged">
+            
+            <ComboBoxItem Content="Step by Step algorythm" />
+            <ComboBoxItem Content="Bresenham Circle"/>
+            <ComboBoxItem Content="DDA line"/>
+            <ComboBoxItem Content="Bresenham line"/>
+        </ComboBox>
+
+    </Grid>
+</Window>
